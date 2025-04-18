@@ -1,0 +1,147 @@
+<section class="card-container">
+  {{#each stories}}
+    <div class="card">
+        <p style="display: none;" id="stryId">{{this._id}}</p>
+        <img src="/images/story-images/{{this._id}}.jpg" alt="">
+        <h2>{{this.name}} </h2>
+        <p class="description">{{this.description}}</p>
+        <p class="genre">{{this.genre}}</p>
+        <p class="likes"> ❤︎ {{this.like_count}}</p>
+    </div>
+{{/each}}
+</section>
+
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <img id="modal-image" src="" alt="">
+        <h2 id="modal-title"></h2>
+        <p id="modelStoryId" style="display: none;"></p>
+        <p id="modal-description" style="color: rgb(36, 36, 36);"></p>
+        <p style="color: rgb(181, 189, 197);" id="modal-genre"></p>
+        <p style="color: rgb(181, 189, 197);" id="modal-likes"></p>
+        <div class="btns">
+        <button type="button" class="button" id="playButton">
+            <span class="fold"></span>
+
+                 <div class="points_wrapper">
+                 <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                  <i class="point"></i>
+                 </div>
+
+                <span class="inner"
+                  ><svg
+                class="icon"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke-linecap="round"
+               stroke-linejoin="round"
+                stroke-width="2.5"
+                  >
+                <polyline
+                  points="13.18 1.37 13.18 9.64 21.45 9.64 10.82 22.63 10.82 14.36 2.55 14.36 13.18 1.37"
+                ></polyline></svg
+              >Play Now</span
+            >
+        </button>
+        <!-- From Uiverse.io by Tsiangana --> 
+        <label class="ui-bookmark">
+          <input type="checkbox" />
+          <div class="bookmark">
+            <svg
+              viewBox="0 0 16 16"
+              style="margin-top:4px"
+              class="bi bi-heart-fill"
+              height="25"
+              width="25"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+                fill-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+        </label>
+
+</div>
+
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+    // Get all story cards
+    const cards = document.querySelectorAll('.card');
+    const modal = document.getElementById('modal');
+    const closeBtn = document.querySelector('.close');
+    const playButton = document.getElementById('playButton');
+    
+    let currentStoryId = null;
+
+    // Add click event to each card
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Get story details from the card
+            const storyId = this.querySelector('#stryId').textContent;
+            const imgSrc = this.querySelector('img').src;
+            const title = this.querySelector('h2').textContent;
+            const description = this.querySelector('.description').textContent;
+            const genre = this.querySelector('.genre').textContent;
+            const likes = this.querySelector('.likes').textContent;
+            
+            // Store current story ID
+            currentStoryId = storyId;
+            
+            // Update modal content
+            document.getElementById('modal-image').src = imgSrc;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('modal-genre').textContent = genre;
+            document.getElementById('modal-likes').textContent = likes;
+            document.getElementById('modelStoryId').textContent = storyId;
+            
+            // Show modal
+            modal.style.display = 'block';
+        });
+    });
+
+    // Close modal when clicking X
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Handle play button click
+    playButton.addEventListener('click', function() {
+    const form = document.createElement('form');
+    form.action = '/play';
+    form.method = 'GET';  // Use GET method
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'storyId';  // This should match what the server expects
+    input.value = document.querySelector('#modelStoryId').textContent;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+});
+
+   });
+</script>

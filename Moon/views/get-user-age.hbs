@@ -1,0 +1,201 @@
+<style>
+    .body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f000;
+    }
+
+    .container {
+        text-align: center;
+        height: 600px;
+    }
+
+    .age-selector {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        width: 1020px;
+        margin: 20px auto;
+        position: relative;
+        white-space: nowrap; /* Prevent tiles from wrapping */
+    }
+
+    .age-tiles {
+        display: inline-flex; /* Use inline-flex for horizontal layout */
+        transition: transform 0.5s ease;
+    }
+
+    .age-tile {
+        flex: 0 0 100px; /* 2x bigger tiles */
+        height: 100px; /* 2x bigger tiles */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ddd;
+        margin: 0 10px; /* 2x bigger margin */
+        border-radius: 20px; /* 2x bigger border radius */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0.5;
+        font-size: 24px; /* 2x bigger font size */
+    }
+
+    .age-tile.selected {
+        transform: scale(1.5);
+        opacity: 1;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .gender-selector {
+        margin: 40px 0; /* 2x bigger margin */
+    }
+
+    .gender-button {
+        padding: 20px 40px; /* 2x bigger padding */
+        margin: 0 20px; /* 2x bigger margin */
+        border: none;
+        border-radius: 10px; /* 2x bigger border radius */
+        cursor: pointer;
+        background-color: #ddd;
+        transition: background-color 0.3s ease;
+        font-size: 24px; /* 2x bigger font size */
+    }
+
+    .gender-button.selected.male {
+        background-color: #007bff; /* Blue for male */
+        color: white;
+    }
+
+    .gender-button.selected.female {
+        background-color: #ff69b4; /* Pink for female */
+        color: white;
+    }
+
+    #submit-button {
+        padding: 20px 40px; /* 2x bigger padding */
+        border: none;
+        border-radius: 10px; /* 2x bigger border radius */
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        font-size: 24px; /* 2x bigger font size */
+    }
+
+    #submit-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+</style>
+<div class="body">
+    <div class="container">
+        <div class="age-selector">
+            <div class="age-tiles" id="age-tiles">
+                <!-- Age tiles will be dynamically inserted here -->
+            </div>
+        </div>
+        <div class="gender-selector">
+            <button class="gender-button" id="male-button">Male</button>
+            <button class="gender-button" id="female-button">Female</button>
+        </div>
+        <form id="hidden-form" action="/register/age" method="POST" style="display: none;">
+            <input type="hidden" name="age" id="hidden-age">
+            <input type="hidden" name="gender" id="hidden-gender">
+        </form>
+        <button id="submit-button" disabled>Submit</button>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ageTilesContainer = document.getElementById('age-tiles');
+        const maleButton = document.getElementById('male-button');
+        const femaleButton = document.getElementById('female-button');
+        const submitButton = document.getElementById('submit-button');
+        const hiddenAgeInput = document.getElementById('hidden-age');
+        const hiddenGenderInput = document.getElementById('hidden-gender');
+        const hiddenForm = document.getElementById('hidden-form');
+
+        // Debugging: Check if hidden inputs are found
+        console.log('Hidden Age Input:', hiddenAgeInput);
+        console.log('Hidden Gender Input:', hiddenGenderInput);
+
+        let selectedAge = 25; // Pre-selected age
+        let selectedGender = null;
+
+        // Generate age tiles
+        for (let i = 1; i <= 100; i++) {
+            const ageTile = document.createElement('div');
+            ageTile.classList.add('age-tile');
+            ageTile.textContent = i;
+            ageTile.addEventListener('click', () => selectAge(i));
+            ageTilesContainer.appendChild(ageTile);
+        }
+
+        // Pre-select age 25
+        selectAge(selectedAge);
+
+        // Function to select age
+        function selectAge(age) {
+            selectedAge = age;
+            if (hiddenAgeInput) {
+                hiddenAgeInput.value = age;
+            }
+            updateAgeTiles();
+            checkSubmitButton();
+        }
+
+        // Function to update age tiles
+        function updateAgeTiles() {
+            const ageTiles = document.querySelectorAll('.age-tile');
+            ageTiles.forEach(tile => {
+                const tileAge = parseInt(tile.textContent);
+                if (tileAge === selectedAge) {
+                    tile.classList.add('selected');
+                } else {
+                    tile.classList.remove('selected');
+                }
+            });
+        }
+
+        // Function to select gender
+        function selectGender(gender) {
+            selectedGender = gender;
+            if (hiddenGenderInput) {
+                hiddenGenderInput.value = gender;
+            }
+            checkSubmitButton();
+        }
+
+        // Event listeners for gender buttons
+        maleButton.addEventListener('click', () => {
+            maleButton.classList.add('selected', 'male');
+            femaleButton.classList.remove('selected', 'female');
+            selectGender('male');
+        });
+
+        femaleButton.addEventListener('click', () => {
+            femaleButton.classList.add('selected', 'female');
+            maleButton.classList.remove('selected', 'male');
+            selectGender('female');
+        });
+
+        // Function to check if submit button should be enabled
+        function checkSubmitButton() {
+            if (selectedAge && selectedGender) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        // Event listener for submit button
+        submitButton.addEventListener('click', () => {
+            // Debugging: Check if values are set
+            console.log('Submitting with age:', hiddenAgeInput.value);
+            console.log('Submitting with gender:', hiddenGenderInput.value);
+            hiddenForm.submit();
+        });
+    });
+</script>

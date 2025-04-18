@@ -1,0 +1,185 @@
+<section class="user-dashboard">
+  <div class="dashboard-header">
+    <a href="javascript:history.back()" class="back-arrow">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h2>User Account Dashboard</h2>
+    <p>Welcome back, {{user.name}}!</p>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="user-info-card">
+      <div class="user-info-header">
+        <h3>Personal Information</h3>
+      </div>
+      <form action="/useraccount/edit" method="post">
+      <div class="user-details">
+        <div class="detail-row">
+          <span class="detail-label">Name:</span>
+          <input type="text" name="name" value="{{user.name}}">
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Email:</span>
+          <input type="text" name="email" value="{{user.email}}">
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Age:</span>
+          <input type="number" name="age" value="{{user.age}}">
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Gender:</span>
+          <input type="text" name="gender" value="{{user.gender}}">
+
+        </div>
+      </div>
+    </div>
+
+    <button><input type="submit" value="Update" style="background-color: #4a6fa5;font-size:20px;color:#fff;padding-inline: 8px;padding-block: 4px;font-weight: 800;"></button>
+  </div> </form>
+</section>
+
+<style>
+  .user-dashboard {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(rgba(255, 255, 255, 0.877), rgba(255, 255, 255, 0.781)),url('/images/moonImg.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .dashboard-header {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .back-arrow {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    color: #4a6fa5;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .back-arrow:hover {
+    color: #3a5a80;
+  }
+
+  .dashboard-header h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-header p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .user-info-card {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 6px;
+    border-left: 4px solid #4a6fa5;
+  }
+
+  .user-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .user-info-header h3 {
+    color: #4a6fa5;
+    margin: 0;
+  }
+
+  .edit-btn {
+    padding: 0.5rem 1rem;
+    background: #4a6fa5;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+  }
+
+  .edit-btn:hover {
+    background: #3a5a80;
+  }
+
+  .detail-row {
+    display: flex;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .detail-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .detail-label {
+    font-weight: 600;
+    width: 120px;
+    color: #555;
+  }
+
+  .detail-value {
+    color: #333;
+  }
+
+  .dashboard-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .action-btn {
+    padding: 0.8rem 1.5rem;
+    background: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+  }
+
+  .action-btn:hover {
+    background: #e0e0e0;
+  }
+
+  .action-btn.danger {
+    background: #f8d7da;
+    color: #721c24;
+  }
+
+  .action-btn.danger:hover {
+    background: #f1b0b7;
+  }
+
+  .action-btn i {
+    font-size: 1rem;
+  }
+  input{
+    border: none;
+    background-color: #f9f9f9;
+  }
+  input:active{
+    border: none;
+    background-color: #f9f9f9;
+  }
+</style>

@@ -1,0 +1,21 @@
+<nav>
+    <img src="/images/moonLogo.png" alt="MOON">
+    <div>
+        <a href="{{#if admin}} /admin/login {{else}} /login {{/if}}" id="loginBtn"><img src="/images/login.svg" alt="">Login</a>
+    </div>
+</nav>
+<style>
+    #loginBtn{
+        width: auto;
+        height: auto;
+        min-width: 100px;
+        padding-block: 8px;
+        padding-inline: 4px;
+        border-radius: 10px;
+        background-color: rgb(207, 123, 255);
+        color: white;
+        font-family: monospace;
+        font-weight: 800;
+        font-size: 18px;
+    }
+</style>

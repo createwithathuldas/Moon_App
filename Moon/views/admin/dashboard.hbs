@@ -1,0 +1,211 @@
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Scoped styles for the dashboard */
+    .story-dashboard {
+      font-family: 'Fredoka One', cursive;
+      background-color: #f4f4f900;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .story-dashboard h1, .story-dashboard h2 {
+      color: #6a1b9a; /* Light purple */
+    }
+    .story-dashboard .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .story-dashboard .card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+    .story-dashboard .card:hover {
+      transform: scale(1.05);
+    }
+    .story-dashboard .card i {
+      font-size: 2rem;
+      color: #ff6f61; /* Light red */
+    }
+    .story-dashboard .card h3 {
+      margin: 10px 0;
+      color: #6a1b9a; /* Light purple */
+    }
+    .story-dashboard .card p {
+      font-size: 1.5rem;
+      color: #333;
+    }
+    .story-dashboard .chart-container {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Expanded chart container */
+.story-dashboard .chart-container.expanded {
+  width: 100%;
+  height: auto;
+}
+
+/* Collapsed chart container */
+.story-dashboard .chart-container.collapsed {
+  width: 300px; /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+}
+
+    .story-dashboard .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .story-dashboard .filters select, .story-dashboard .filters button {
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #6a1b9a; /* Light purple */
+      background: white;
+      font-family: 'Fredoka One', cursive;
+      color: #6a1b9a;
+      cursor: pointer;
+    }
+    .story-dashboard .filters button:hover {
+      background: #6a1b9a;
+      color: white;
+    }
+  </style>
+  <section class="story-dashboard">
+  <h1>Story App Analytics Dashboard</h1>
+  <p>Fun insights to make stories even better!</p>
+
+
+  <!-- Key Metrics -->
+  <div class="dashboard">
+    <div class="card">
+      <i class="fas fa-book"></i>
+      <h3>Total Stories</h3>
+      <p>{{data.totalStories}}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-headphones"></i>
+      <h3>Total Listeners</h3>
+      <p>{{data.totalUsers}}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-star"></i>
+      <h3>Most Popular Story</h3>
+      <p>"The Magic Forest"</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-clock"></i>
+      <h3>Avg Listening Time</h3>
+      <p>{{data.averageListeningTime}} mins</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+<div class="chart-container" data-chart="mostHeardStories">
+  <h2>Most Heard Stories</h2>
+  <canvas id="mostHeardStories"></canvas>
+</div>
+<div style="display: flex; gap: 5px;">
+  <div class="chart-container" data-chart="listeningTrends">
+    <h2>Listening Trends</h2>
+    <canvas id="listeningTrends"></canvas>
+  </div>
+  <div class="chart-container" data-chart="userDemographics">
+    <h2>User Demographics</h2>
+    <canvas id="userDemographics"></canvas>
+  </div>
+</div>
+
+  </div>
+</section>
+
+  <script>
+  // Function to toggle chart sizes
+  function toggleChartSize(event) {
+    const chartContainers = document.querySelectorAll('.chart-container');
+    const clickedChart = event.currentTarget;
+
+    // Toggle the expanded/collapsed state
+    chartContainers.forEach(container => {
+      if (container === clickedChart) {
+        container.classList.toggle('expanded');
+        container.classList.remove('collapsed');
+      } else {
+        container.classList.remove('expanded');
+        container.classList.add('collapsed');
+      }
+    });
+  }
+
+  // Add click event listeners to all chart containers
+  const chartContainers = document.querySelectorAll('.chart-container');
+  chartContainers.forEach(container => {
+    container.addEventListener('click', toggleChartSize);
+  });
+
+  // Initialize Chart.js charts
+  
+  const ctx1 = document.getElementById('mostHeardStories').getContext('2d');
+  new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['The Magic Forest', 'Space Adventure', 'Pirate Island', 'Dinosaur Land'],
+      datasets: [{
+        label: 'Listens',
+        data: [6, 5, 3, 2],
+        backgroundColor: '#ffd54f', // Light yellow
+        borderColor: '#ff6f61', // Light red
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  const ctx2 = document.getElementById('listeningTrends').getContext('2d');
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      datasets: [{
+        label: 'Listens',
+        data: [0, 2, 2, 5, 6],
+        borderColor: '#6a1b9a', // Light purple
+        borderWidth: 3,
+        fill: false
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  const ctx3 = document.getElementById('userDemographics').getContext('2d');
+  new Chart(ctx3, {
+    type: 'pie',
+    data: {
+      labels: ['Kids (2-6)', 'Teens (7-10)', 'Adults (10+)'],
+      datasets: [{
+        label: 'Users',
+        data: [3, 2, 1],
+        backgroundColor: ['#ff6f61', '#6a1b9a', '#4dd0e1'], // Light red, light purple, light blue
+        borderWidth: 2
+      }]
+    }
+  });    
+  </script>

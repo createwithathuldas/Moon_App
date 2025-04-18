@@ -1,0 +1,1183 @@
+<style>
+ .container{
+    width: 100%;
+    min-height: 100vh;
+ }
+ .bgImage{
+    width: 100%;
+    height: 100%;
+    background-color: #ff6b6b;
+    position: absolute;
+    z-index: -1;
+    opacity: 0.3;
+ }
+ .imageContainer{
+    max-width: 80vw;
+    max-height: 70vh;
+    min-width: 200px;
+    min-height: 200px;
+    width: auto;
+    height: auto;
+ }
+
+.custom-player {
+  background-color: #ffebee;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 700px;
+  margin: 0 auto;
+  display: none;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.play-btn, .pause-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.play-btn:hover, .pause-btn:hover {
+  transform: scale(1.1);
+}
+
+.progress-container {
+  flex-grow: 1;
+  height: 10px;
+  background-color: #ffcdd2;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #ff6b6b;
+  border-radius: 5px;
+  width: 0%;
+}
+
+.progress-indicator {
+  width: 15px;
+  height: 15px;
+  background-color: #ff6b6b;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+}
+
+.volume-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.volume-slider {
+  width: 80px;
+}
+
+.coverContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.top{
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(44, 44, 44, 0.349), rgba(0, 0, 0, 0.432)),url('/images/story-images/{{combinedData.story._id}}.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+img{
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+}
+h1{
+    font-size: clamp(2rem, 8vw, 5rem);
+    color: rgb(123, 0, 148);
+    -webkit-text-stroke: 2px rgb(255, 252, 236);
+    font-family: 'Fredoka One', cursive;
+    position: absolute;
+    bottom: 250px; /* Changed from top positioning */
+    left: 0;
+    width: 100%;
+    text-align: left;
+    padding-left: 5%;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.description{
+    padding-top: 80px; /* Reduced from 100px */
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    box-sizing: border-box;
+}
+.desctxt{
+    font-family: monospace;
+    color: #fffbbd;
+    font-size: clamp(16px, 2.5vw, 20px);
+    padding: 0 5% 50px;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    white-space: pre-line; /* Preserve line breaks */
+    overflow: visible; /* Ensure text isn't hidden */
+    height: auto; /* Let it expand naturally */
+    margin-bottom: 30px; /* Add space before readStory */
+}
+
+.shortdetails{
+    height: fit-content;
+    font-size: 14px;
+    padding-left: 5%;
+    font-family: monospace;
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.sd{
+    color: #999999;
+}
+.sdh{
+    background-color: #999999;
+    color: #fff;
+    padding-inline: 10px;
+    padding-block: 5px;
+    border-radius: 10px;
+    opacity: 0.8;
+    position: relative;
+    top: -5px;
+}
+.readStory{
+    width: 90%;
+    min-height: 80vh;
+    margin: 0 auto 50px;
+    border-radius: 15px;
+    background-color: rgba(215, 255, 255, 0.651);
+    border: 6px rgb(50, 146, 255) dashed;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        -webkit-text-stroke: 1px rgb(255, 252, 236);
+        bottom: -20px; /* Adjusted for mobile */
+        font-size: clamp(1.8rem, 7vw, 3rem);
+    }
+    .shortdetails {
+        padding-left: 5%;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .readStory {
+        width: 95%;
+        min-height: 60vh;
+    }
+    .description {
+        padding-top: 60px; /* Reduced for mobile */
+    }
+}
+
+
+
+ .readStory {
+        position: relative;
+        width: 90%;
+        min-height: 80vh;
+        margin: 0 auto 50px;
+        border-radius: 15px;
+        background-color: rgba(190, 134, 255, 0.911);
+        border: 5px rgb(42, 127, 255) dashed;
+        box-sizing: border-box;
+        padding: 20px;
+        overflow-y: auto; /* Enable vertical scrolling */
+        max-height: 80vh; /* Limit height with scroll */
+    }
+
+    .scroll-progress-container {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.3);
+        z-index: 10;
+        border-radius: 5px;
+    }
+
+    .scroll-progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: #ff6b6b;
+        border-radius: 5px;
+        transition: width 0.1s;
+    }
+
+    .story-content {
+        white-space: pre-line;
+        line-height: 1.6;
+        font-family: 'Courier New', monospace;
+        color: #333;
+        padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .readStory {
+            width: 95%;
+            min-height: 60vh;
+            max-height: 60vh;
+        }
+    }
+
+
+/*like wrapper */
+.likeBox{
+  height: 20px;
+  position:absolute;
+  left: 75vw;
+  bottom: 30vh;
+}
+.like-wrapper {
+  max-height: 50px;
+  position: absolute;
+  --gap: 0.5em;
+  --radius: 0.35em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  --dot-bg: #212121;
+  --dot-color: #313131;
+  --dot-size: 1px;
+  --dot-space: 22px;
+  background: linear-gradient(
+        90deg,
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    linear-gradient(
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
+  border: 0.1em solid #313131;
+  padding: 0.5em;
+  border-radius: var(--radius);
+  box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.check[type="checkbox"] {
+  display: none;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: -0.25em;
+  margin-bottom: -0.25em;
+}
+
+.icon {
+  width: 1.8em;
+  height: 1.8em;
+  margin-left: 0.5em;
+  fill: white;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.icon.active {
+  display: none;
+  fill: #8000a0;
+}
+
+.check[type="checkbox"]:checked + .container .icon.active {
+  display: inline-block;
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.check[type="checkbox"]:checked + .container .icon.inactive {
+  display: none;
+}
+
+.like-text {
+  margin-left: 0.5em;
+  padding: 0.5em;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-weight: bolder;
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+
+
+/* From Uiverse.io by elijahgummer */ 
+.processContainer {
+  display: none;
+  position: static;
+  z-index: 999;
+  background-color: rgba(74, 0, 97, 0.4);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.processing {
+  font-size: 3rem;
+  color: #6d00b6;
+  font-family: monospace;
+  font-size: 40px;
+  position: relative;
+  top: -150px;
+  {{!-- text-shadow: 2px 2px 4px rgba(0,0,0,0.5); --}}
+}
+.hole {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+i {
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+
+  border-radius: 140px;
+  opacity: 0;
+  animation-name: scale;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+i:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+i:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+i:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+i:nth-child(4) {
+  animation-delay: 1.2s;
+}
+
+i:nth-child(5) {
+  animation-delay: 1.5s;
+}
+
+i:nth-child(6) {
+  animation-delay: 1.8s;
+}
+
+i:nth-child(7) {
+  animation-delay: 2.1s;
+}
+
+i:nth-child(8) {
+  animation-delay: 2.4s;
+}
+
+i:nth-child(9) {
+  animation-delay: 2.7s;
+}
+
+i:nth-child(10) {
+  animation-delay: 3s;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(2);
+    opacity: 0;
+    box-shadow: 0px 0px 50px rgba(36, 14, 133, 0.5);
+  }
+  50% {
+    transform: scale(1) translate(0px, -5px);
+    opacity: 1;
+    box-shadow: 0px 8px 20px rgba(185, 79, 255, 0.5);
+  }
+  100% {
+    transform: scale(0.1) translate(0px, 5px);
+    opacity: 0;
+    box-shadow: 0px 10px 20px rgba(255, 255, 255, 0);
+  }
+}
+.dots {
+    display: inline-block;
+    position: relative;
+    top: -25px;
+    left: -23px;
+    font-size: 30px;
+}
+
+.dots::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    animation: dots 1.5s infinite steps(1);
+}
+
+@keyframes dots {
+    0% {
+        content: '.';
+    }
+    33% {
+        content: '..';
+    }
+    66% {
+        content: '...';
+    }
+    100% {
+        content: '.';
+    }
+}
+
+
+
+
+.initialPlayBtn {
+  /* Base styles */
+  height: 50px;
+  position: absolute;
+  left: 86%;
+  bottom: 27vh;
+  width: 200px;
+  cursor: pointer;
+  padding: 0.7em 1em;
+  border-radius: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  
+  /* Text styles */
+  font: bold 18px/1 sans-serif;
+  letter-spacing: 0.05em;
+  color: hsl(0, 0%, 90%);
+  
+  /* Background & border */
+  background: linear-gradient(
+    140deg,
+    hsl(278, 50%, 50%) 20%,
+    hsl(268, 50%, 35%) 100%
+  );
+  border: none;
+  box-shadow: inset 0.4px 1px 4px hsla(0, 0%, 50%, 0.8);
+  
+  /* Animation */
+  transition: all 0.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.initialPlayBtn:hover {
+  transform: scale(1.1);
+  box-shadow: inset 0.4px 1px 4px hsla(0, 0%, 50%, 1),
+              2px 4px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.initialPlayBtn:active {
+  transform: scale(1);
+  letter-spacing: 0.1em;
+  color: white;
+  text-shadow: 0 0 20px white;
+  box-shadow: inset 0.4px 1px 8px hsla(0, 0%, 50%, 1),
+              0 0 8px hsl(273, 50%, 35%);
+}
+
+</style>
+<section>
+    <div class="processContainer">
+      <h2 class="processing">Processing <span class="dots"></span></h2>
+      <!-- From Uiverse.io by elijahgummer --> 
+        <div class="hole">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+
+    </div>
+    <div class="coverContainer">
+        <div class="top">
+            <img src="/images/story-images/{{combinedData.story._id}}.jpg" alt="">
+        </div>
+        <h1>Story Headline</h1>
+        <button class="initialPlayBtn">
+             <svg viewBox="0 0 16 16" width="16" height="16">
+                 <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+               </svg>
+           Play
+        </button>
+  {{!-- Like Buttton  --}}
+        <div class="likeBox"><div class="like-wrapper">
+          <input class="check" type="checkbox" id="like-toggle" {{#if combinedData.isLiked}} checked {{/if}} />
+          <label class="container" for="like-toggle">
+            <svg
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon inactive"
+            >
+              <path
+                d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"
+              ></path>
+            </svg>
+            <svg
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon active"
+            >
+              <path
+                d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
+              ></path>
+            </svg>
+            <div class="checkmark"></div>
+            <span class="like-text"> {{#if combinedData.storystats.likes}}{{combinedData.storystats.likes}}{{/if}}</span>
+          </label>
+        </div></div> 
+
+
+
+
+
+        <div class="description">
+
+          <div class="custom-player" style="margin-bottom: 20px;">
+            <div class="player-controls">
+              <button class="play-btn">▶</button>
+              <button class="pause-btn" style="display:none;">❚❚</button>
+              <div class="progress-container">
+                <div class="progress-bar"></div>
+                <div class="progress-indicator"></div>
+              </div>
+              <span class="current-time">0:00</span>
+              <span class="duration">0:00</span>
+              <button class="volume-btn">🔊</button>
+              <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1">
+            </div>
+            <audio class="audio-element" src="" id="audio-element"></audio>
+          </div>
+
+            <div class="shortdetails">
+              <p class="sd date">{{combinedData.story.date}}</p>
+              <p class="sd">genre :<p class="sdh genre">{{combinedData.story.genre}}</p></p>
+              <p class="sd">language :<p class="sdh language">{{combinedData.story.language}}</p></p>
+            </div>
+            <p class="sd" style="padding-left: 30px;">description</p>
+            <p class="desctxt">{{combinedData.story.description}}</p>
+
+            <div class="readStory">
+                 <div class="scroll-progress-container">
+                     <div class="scroll-progress-bar"></div>
+                 </div>
+                 <div class="story-content"></div>
+            </div>
+        </div>
+        <div>
+          {{! story-comments.hbs }}<section class="story-comments">
+  <h3 class="comments-title">🐻 Comments ({{comments.length}}) 🐰</h3>
+
+  {{! Comments List }}
+  <div class="comments-list">
+    {{#each combinedData.comments}}
+      {{#if this.comments}}
+      <div class="comment-bubble">
+        <div class="comment-header">
+          <span class="comment-author">👤 {{this.userId}}</span>
+        </div>
+        <div class="comment-content">
+          {{#if this.comments}}
+            <p>"{{this.comments}}"</p>
+          {{else}}
+            <p class="no-content">(No comment text)</p>
+          {{/if}}
+        </div>
+        
+        {{#if (eq (stringify this.userId) (stringify ../combinedData.user._id))}}
+  <div class="comment-actions">
+  <form action="/comments/delete" method="POST">
+    <input type="hidden" name="commentId" value="{{this._id}}">
+    <!-- Add CSRF protection if you're using it (recommended) -->
+    <button type="submit">🗑️ Delete All Comments</button>
+  </form>
+
+</div>
+{{else}}
+{{/if}}
+      </div> {{/if}}
+    {{else}}
+      <div class="no-comments">
+        <img src="/images/empty-comments.png" alt="No comments yet" class="empty-icon">
+        <p>No comments yet. Be the first to comment!</p>
+      </div>
+    {{/each}}
+  </div>
+
+  {{! Add Comment Form }}
+  <div class="add-comment">
+    <h4>✏️ Add Your Comment</h4>
+    <form action="/comments" method="POST" class="comment-form">
+      <input type="hidden" name="storyId" value="{{combinedData.story._id}}">
+      <textarea name="comment" placeholder="What did you think of this story? 🎈" 
+                maxlength="200"></textarea>
+      <div class="form-footer">
+        <div class="char-count">200 characters left</div>
+        <button type="submit" class="submit-btn">
+          <span class="btn-icon">✏️</span> Post Comment
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+</section>
+
+<style>
+  .story-comments {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f4ff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+  }
+
+  .comments-title {
+    color: #6a4c93;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+
+  /* Comment Bubbles */
+  .comment-bubble {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    border: 2px solid #e0c8ff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .comment-bubble:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: #e0c8ff transparent;
+  }
+
+  .comment-bubble:after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 22px;
+    border-width: 0 8px 8px;
+    border-style: solid;
+    border-color: white transparent;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #8e6bbf;
+    font-size: 14px;
+  }
+
+  .comment-content {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #5a4a6a;
+    margin-bottom: 10px;
+  }
+
+  .comment-content p {
+    margin: 0;
+    padding: 8px 0;
+  }
+
+  /* No Comments State */
+  .no-comments {
+    text-align: center;
+    padding: 20px;
+    color: #8e6bbf;
+  }
+
+  .no-comments img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+  }
+
+  /* Comment Form */
+  .add-comment {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px dashed #c9a8ff;
+  }
+
+  .add-comment h4 {
+    color: #6a4c93;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+
+  .comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 2px solid #e0c8ff;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 10px;
+  }
+
+  .comment-form textarea:focus {
+    outline: none;
+    border-color: #b388ff;
+    box-shadow: 0 0 0 3px rgba(179, 136, 255, 0.2);
+  }
+
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .char-count {
+    color: #a38bbf;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    background-color: #8e6bbf;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: #7d5ba6;
+    transform: translateY(-2px);
+  }
+
+  /* Delete Button */
+  .delete-btn {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .delete-btn:hover {
+    color: #ff5252;
+  }
+
+  /* Character Counter Animation */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .low-chars {
+    color: #ff6b6b;
+    animation: pulse 1s infinite;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .story-comments {
+      padding: 15px;
+      border-radius: 15px;
+    }
+    
+    .comment-header {
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .form-footer {
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+  }
+</style>
+<script>
+  // Character counter for comment textarea
+  const textarea = document.querySelector('.comment-form textarea');
+  const charCount = document.querySelector('.char-count');
+  const maxLength = 200;
+
+  if (textarea && charCount) {
+    textarea.addEventListener('input', function() {
+      const remaining = maxLength - this.value.length;
+      charCount.textContent = `${remaining} characters left`;
+      
+      if (remaining < 30) {
+        charCount.classList.add('low-chars');
+      } else {
+        charCount.classList.remove('low-chars');
+      }
+    });
+  }
+</script>
+          
+        </div>
+        
+    </div>
+</section>
+
+ <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Select ALL players (not just the first one)
+  const players = document.querySelectorAll('.custom-player');
+   const storyContentDiv = document.querySelector('.story-content');
+   const storyId = '{{combinedData.story._id}}';
+   const userId = '{{combinedData.user._id}}';
+   const storyUrl = `/texts/story-texts/${storyId}.txt`;
+   const voiceUrl = `/voices/user-voices/${userId}.wav`;
+
+  players.forEach(player => {
+    const audio = player.querySelector('.audio-element');
+    const playBtn = player.querySelector('.play-btn');
+    const pauseBtn = player.querySelector('.pause-btn');
+    const progressBar = player.querySelector('.progress-bar');
+    const progressContainer = player.querySelector('.progress-container');
+    const progressIndicator = player.querySelector('.progress-indicator');
+    const currentTimeEl = player.querySelector('.current-time');
+    const durationEl = player.querySelector('.duration');
+    const volumeBtn = player.querySelector('.volume-btn');
+    const volumeSlider = player.querySelector('.volume-slider');
+
+    // Play/Pause functionality
+    playBtn.addEventListener('click', () => {
+      audio.play();
+      playBtn.style.display = 'none';
+      pauseBtn.style.display = 'block';
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      audio.pause();
+      pauseBtn.style.display = 'none';
+      playBtn.style.display = 'block';
+    });
+
+    // Update progress bar
+    audio.addEventListener('timeupdate', () => {
+      const currentTime = audio.currentTime;
+      const duration = audio.duration;
+      const progressPercent = (currentTime / duration) * 100;
+      
+      progressBar.style.width = `${progressPercent}%`;
+      progressIndicator.style.left = `${progressPercent}%`;
+      
+      // Update time display
+      currentTimeEl.textContent = formatTime(currentTime);
+      if (duration) {
+        durationEl.textContent = formatTime(duration);
+      }
+    });
+
+    // Click on progress bar to seek
+    progressContainer.addEventListener('click', (e) => {
+      const width = progressContainer.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+      
+      audio.currentTime = (clickX / width) * duration;
+    });
+
+    // Volume control
+    volumeSlider.addEventListener('input', () => {
+      audio.volume = volumeSlider.value;
+      updateVolumeIcon();
+    });
+
+    volumeBtn.addEventListener('click', () => {
+      if (audio.volume > 0) {
+        audio.volume = 0;
+        volumeSlider.value = 0;
+      } else {
+        audio.volume = 1;
+        volumeSlider.value = 1;
+      }
+      updateVolumeIcon();
+    });
+
+    function updateVolumeIcon() {
+      if (audio.volume === 0) {
+        volumeBtn.textContent = '🔇';
+      } else if (audio.volume < 0.5) {
+        volumeBtn.textContent = '🔈';
+      } else {
+        volumeBtn.textContent = '🔊';
+      }
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // When audio ends
+    audio.addEventListener('ended', () => {
+      pauseBtn.style.display = 'none';
+      playBtn.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressIndicator.style.left = '0%';
+      currentTimeEl.textContent = '0:00';
+    });
+  });
+
+   fetch(storyUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Story not found');
+                }
+                return response.text();
+            })
+            .then(text => {
+                storyContentDiv.textContent = text;
+                initScrollProgress();
+            })
+            .catch(error => {
+                console.error('Error loading story:', error);
+                storyContentDiv.textContent = 'Sorry, the story content could not be loaded.';
+            });
+
+        // Scroll progress functionality
+        function initScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress-bar');
+            const readStoryDiv = document.querySelector('.readStory');
+
+            readStoryDiv.addEventListener('scroll', function() {
+                const scrollHeight = readStoryDiv.scrollHeight - readStoryDiv.clientHeight;
+                const scrollPosition = readStoryDiv.scrollTop;
+                const scrollPercentage = (scrollPosition / scrollHeight) * 100;
+                progressBar.style.width = scrollPercentage + '%';
+            });
+
+            // Initialize progress bar
+            progressBar.style.width = '0%';
+        }
+
+const initialPlayBtn = document.querySelector('.initialPlayBtn');
+initialPlayBtn.addEventListener('click', async function() {
+    // Hide initial button and show processing
+    initialPlayBtn.style.display = 'none';
+    document.querySelector('.processContainer').style.display = 'flex';
+    
+    // Get references to all elements we'll need
+    const customPlayer = document.querySelector('.custom-player');
+    const audioElement = document.querySelector('.audio-element');
+    const coverContainer = document.querySelector('.coverContainer');
+    const likeBox = document.querySelector('.likeBox');
+    const storyHeader = document.querySelector('h1');
+    likeBox.style.display = 'none';
+    storyHeader.style.display = 'none';
+    coverContainer.style.display = 'none';
+
+
+    try {
+        // 1. Fetch files
+        const [storyResponse, voiceResponse] = await Promise.all([
+            fetch(storyUrl),
+            fetch(voiceUrl)
+        ]);
+
+        if (!storyResponse.ok || !voiceResponse.ok) {
+            throw new Error('Failed to fetch source files');
+        }
+
+        // 2. Prepare FormData
+        const formData = new FormData();
+        formData.append('txtfile', await storyResponse.blob(), `${storyId}.txt`);
+        formData.append('wavfile', await voiceResponse.blob(), `${userId}.wav`);
+
+        // 3. Send to backend
+        const response = await fetch('http://127.0.0.1:5000/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // 4. Handle response
+        if (data.audio_url) {
+            // Update audio source
+            audioElement.src = data.audio_url;
+            
+            // Show the custom player
+            customPlayer.style.display = 'block';
+            
+            // Restore the UI (show previously hidden elements)
+            coverContainer.style.display = 'flex';
+            likeBox.style.display = 'block';
+            storyHeader.style.display = 'block';
+            
+            // Hide processing indicator
+            document.querySelector('.processContainer').style.display = 'none';
+            
+            // Initialize player controls
+            const playBtn = customPlayer.querySelector('.play-btn');
+            playBtn.style.display = 'block';
+            playBtn.addEventListener('click', () => {
+                audioElement.play().catch(e => {
+                    console.error('Playback failed:', e);
+                    alert('Please click the play button to start audio');
+                });
+            });
+        } else {
+            throw new Error('No audio URL returned from server');
+        }
+    } catch (error) {
+        console.error('Processing error:', error);
+        
+        // Restore UI even on error
+        coverContainer.style.display = 'flex';
+        likeBox.style.display = 'block';
+        storyHeader.style.display = 'block';
+        document.querySelector('.processContainer').style.display = 'none';
+        
+        // Show error in custom player
+        customPlayer.style.display = 'block';
+        customPlayer.innerHTML = `
+            <div style="color: red; padding: 20px;">
+                Error: ${error.message}
+                <button onclick="window.location.reload()">Try Again</button>
+            </div>
+        `;
+    }
+});
+
+
+document.getElementById('like-toggle').addEventListener('change', function() {
+  var form = document.createElement('form');
+  form.action = '/play/like';
+  form.method = 'POST';
+
+  var hiddenInput = document.createElement('input');
+  var hiddenStoryId = document.createElement('input');
+
+  console.log(hiddenInput);  // Logs the <input> element
+  console.log(hiddenStoryId);  // Logs the <input> element
+  
+  if (hiddenInput && hiddenStoryId) {
+    hiddenStoryId.type = 'hidden';
+    hiddenStoryId.name = 'storyId';
+    
+    // Use a real server-side value here or ensure it's correctly injected
+    hiddenStoryId.value = "{{combinedData.story._id}}";  // Ensure this is rendered server-side
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'like';
+    hiddenInput.value = this.checked ? 'true' : 'false'; // Set value based on checkbox state
+
+    form.appendChild(hiddenInput);
+    form.appendChild(hiddenStoryId);
+    
+    console.log(form);  // Logs the entire form
+    document.body.appendChild(form);
+    form.submit();
+  } else {
+    console.error("Error: hidden inputs not created properly.");
+  }
+});
+
+
+
+
+});</script>
